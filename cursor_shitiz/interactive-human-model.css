@@ -1,0 +1,410 @@
+/* Interactive 3D Human Model for PhysioVeda Homepage */
+
+.interactive-human-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 25px;
+    padding: 3rem 2rem;
+    margin: 2rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.interactive-human-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 1;
+}
+
+.interactive-human-section > * {
+    position: relative;
+    z-index: 2;
+}
+
+.section-title.interactive {
+    color: white;
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.human-model-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.human-model-3d {
+    width: 400px;
+    height: 600px;
+    position: relative;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+}
+
+.human-figure-3d {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+/* 3D Human Body Parts */
+.body-part-3d {
+    position: absolute;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.body-part-3d:hover {
+    transform: scale(1.2) translateZ(20px);
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+}
+
+.body-part-3d.active {
+    background: rgba(255, 215, 0, 0.3);
+    border-color: #FFD700;
+    animation: pulseGlow 2s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { 
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        transform: scale(1);
+    }
+    50% { 
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+        transform: scale(1.1);
+    }
+}
+
+/* Head/Neck Region */
+.head-neck-region {
+    top: 5%;
+    left: 50%;
+    width: 80px;
+    height: 100px;
+    transform: translateX(-50%);
+    border-radius: 50% 50% 40% 40%;
+}
+
+/* Shoulders/Arms Region */
+.shoulders-arms-region {
+    top: 15%;
+    left: 50%;
+    width: 160px;
+    height: 80px;
+    transform: translateX(-50%);
+    border-radius: 40px;
+}
+
+/* Spine/Back Region */
+.spine-back-region {
+    top: 25%;
+    left: 50%;
+    width: 100px;
+    height: 120px;
+    transform: translateX(-50%);
+    border-radius: 20px;
+}
+
+/* Hips/Pelvis Region */
+.hips-pelvis-region {
+    top: 45%;
+    left: 50%;
+    width: 120px;
+    height: 60px;
+    transform: translateX(-50%);
+    border-radius: 30px;
+}
+
+/* Knees/Legs Region */
+.knees-legs-region {
+    top: 55%;
+    left: 50%;
+    width: 100px;
+    height: 150px;
+    transform: translateX(-50%);
+    border-radius: 50px;
+}
+
+/* Ankles/Feet Region */
+.ankles-feet-region {
+    bottom: 5%;
+    left: 50%;
+    width: 120px;
+    height: 60px;
+    transform: translateX(-50%);
+    border-radius: 40px 40% 60% 60%;
+}
+
+/* Wrists/Hands Regions */
+.wrists-hands-left {
+    top: 30%;
+    left: 5%;
+    width: 60px;
+    height: 80px;
+    border-radius: 30px;
+}
+
+.wrists-hands-right {
+    top: 30%;
+    right: 5%;
+    width: 60px;
+    height: 80px;
+    border-radius: 30px;
+}
+
+/* Core/Abdomen Region */
+.core-abdomen-region {
+    top: 35%;
+    left: 50%;
+    width: 90px;
+    height: 80px;
+    transform: translateX(-50%);
+    border-radius: 20px;
+}
+
+/* Body Part Labels */
+.body-part-label {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    z-index: 20;
+}
+
+.body-part-3d:hover .body-part-label {
+    opacity: 1;
+    transform: translateY(-10px);
+}
+
+/* Human Model Guide */
+.human-model-guide {
+    max-width: 300px;
+    color: white;
+}
+
+.guide-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #FFD700;
+}
+
+.guide-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+
+.guide-instructions {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.guide-instructions li {
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.guide-instructions li::before {
+    content: '👆';
+    font-size: 1.2rem;
+}
+
+/* Human Silhouette Background */
+.human-silhouette {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 500px;
+    background: linear-gradient(180deg, 
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.1) 100%);
+    clip-path: polygon(
+        40% 0%, 60% 0%,
+        65% 10%, 75% 15%,
+        80% 25%, 75% 35%,
+        70% 45%, 65% 55%,
+        70% 65%, 75% 80%,
+        60% 85%, 65% 95%,
+        55% 100%, 45% 100%,
+        35% 95%, 40% 85%,
+        25% 80%, 30% 65%,
+        35% 55%, 30% 45%,
+        25% 35%, 20% 25%,
+        25% 15%, 35% 10%
+    );
+    filter: blur(2px);
+    z-index: 1;
+}
+
+/* Interactive Effects */
+.interaction-ripple {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    pointer-events: none;
+    animation: rippleEffect 1s ease-out;
+}
+
+@keyframes rippleEffect {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+/* Floating Animation for the Model */
+.human-model-3d {
+    animation: floatingModel 6s ease-in-out infinite;
+}
+
+@keyframes floatingModel {
+    0%, 100% { transform: translateY(0) rotateY(0deg); }
+    33% { transform: translateY(-10px) rotateY(2deg); }
+    66% { transform: translateY(5px) rotateY(-2deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .human-model-container {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .human-model-3d {
+        width: 350px;
+        height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .interactive-human-section {
+        padding: 2rem 1rem;
+    }
+    
+    .human-model-3d {
+        width: 300px;
+        height: 450px;
+    }
+    
+    .body-part-3d {
+        transform: scale(0.8);
+    }
+    
+    .human-model-guide {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .human-model-3d {
+        width: 250px;
+        height: 400px;
+    }
+    
+    .body-part-3d {
+        transform: scale(0.7);
+    }
+    
+    .guide-instructions {
+        text-align: center;
+    }
+}
+
+/* Touch Device Enhancements */
+@media (hover: none) and (pointer: coarse) {
+    .body-part-3d:active {
+        transform: scale(1.3);
+        background: rgba(255, 255, 255, 0.5);
+    }
+    
+    .body-part-label {
+        opacity: 1;
+        position: relative;
+        transform: translateY(10px);
+        margin-top: 0.5rem;
+    }
+}
+
+/* Accessibility Enhancements */
+.body-part-3d:focus {
+    outline: 3px solid #FFD700;
+    outline-offset: 2px;
+    background: rgba(255, 215, 0, 0.3);
+}
+
+.body-part-3d[aria-selected="true"] {
+    background: rgba(255, 215, 0, 0.4);
+    border-color: #FFD700;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .body-part-3d {
+        background: rgba(255, 255, 255, 0.8);
+        border: 3px solid #000;
+        color: #000;
+    }
+    
+    .body-part-3d:hover {
+        background: #FFD700;
+        border-color: #000;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .human-model-3d,
+    .body-part-3d,
+    .interaction-ripple {
+        animation: none !important;
+        transition: none !important;
+    }
+    
+    .body-part-3d:hover {
+        transform: scale(1.1);
+    }
+} 
