@@ -1,0 +1,820 @@
+/* Enhanced Styles for PhysioVeda Platform */
+
+/* Achievement Notifications */
+.achievement-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: #333;
+    padding: 1rem 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+    transform: translateX(400px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    max-width: 300px;
+}
+
+.achievement-notification.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.achievement-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.achievement-content i {
+    font-size: 2rem;
+    color: #FF6B00;
+}
+
+.achievement-content h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.achievement-content p {
+    margin: 0.25rem 0;
+    font-weight: 500;
+}
+
+.achievement-content small {
+    opacity: 0.8;
+    font-size: 0.8rem;
+}
+
+/* Progress Dashboard */
+.progress-dashboard {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+.progress-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.progress-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.progress-card:hover {
+    transform: translateY(-5px);
+}
+
+.progress-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 0.5rem;
+}
+
+.progress-label {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.streak-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.streak-flame {
+    color: #FF6B6B;
+    font-size: 1.2rem;
+}
+
+/* Enhanced Camera View */
+.camera-container {
+    position: relative;
+    background: #000;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.camera-video {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    background: #000;
+}
+
+.pose-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.pose-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.camera-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+}
+
+.camera-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 50%;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.camera-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+/* Real-time Feedback Panel */
+.feedback-panel {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    border-left: 4px solid #4ECDC4;
+}
+
+.feedback-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    color: #4ECDC4;
+    font-weight: 600;
+}
+
+.feedback-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.feedback-list li {
+    padding: 0.5rem 0;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.feedback-list li.positive::before {
+    content: '✓';
+    color: #4ECDC4;
+    font-weight: bold;
+}
+
+.feedback-list li.warning::before {
+    content: '⚠';
+    color: #FECA57;
+    font-weight: bold;
+}
+
+.feedback-list li.error::before {
+    content: '✗';
+    color: #FF6B6B;
+    font-weight: bold;
+}
+
+/* Biometric Monitor */
+.biometric-panel {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(46, 125, 50, 0.1) 100%);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    border-left: 4px solid #4CAF50;
+}
+
+.biometric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.biometric-metric {
+    text-align: center;
+}
+
+.biometric-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #4CAF50;
+}
+
+.biometric-label {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+.heart-rate.high {
+    color: #FF6B6B !important;
+    animation: heartbeat 1s infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Enhanced Exercise Cards */
+.exercise-card-enhanced {
+    position: relative;
+    overflow: hidden;
+}
+
+.exercise-card-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.exercise-card-enhanced:hover::before {
+    left: 100%;
+}
+
+.exercise-benefits {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.exercise-benefits h5 {
+    color: #667eea;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.benefits-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.benefit-tag {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+/* Voice Guide Controls */
+.voice-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.voice-toggle {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    padding: 1rem;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.voice-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.voice-toggle.active {
+    background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+}
+
+.voice-toggle.speaking {
+    animation: pulse-voice 1s infinite;
+}
+
+@keyframes pulse-voice {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+/* Enhanced Body Part Cards */
+.body-part-card-enhanced {
+    position: relative;
+    overflow: hidden;
+}
+
+.body-part-card-enhanced .body-part-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.body-part-card-enhanced:hover .body-part-icon {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.body-part-stats {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+/* Exercise Video Player */
+.video-player {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.video-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 10px;
+}
+
+.video-controls {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.video-control-btn {
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+}
+
+/* Advanced Progress Indicators */
+.progress-ring {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.progress-ring svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.progress-ring-circle {
+    stroke-dasharray: 339;
+    stroke-dashoffset: 339;
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+.progress-ring-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #667eea;
+}
+
+/* Session Timer */
+.session-timer {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 1rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.timer-display {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #667eea;
+    font-family: 'Courier New', monospace;
+}
+
+.timer-label {
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+/* Exercise Instructions Overlay */
+.instructions-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.instructions-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.instructions-content {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    margin: 1rem;
+}
+
+.instructions-list {
+    list-style: none;
+    padding: 0;
+}
+
+.instructions-list li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.instruction-step {
+    background: #667eea;
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+    .progress-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .biometric-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .camera-video {
+        height: 300px;
+    }
+    
+    .achievement-notification {
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        transform: translateY(-100px);
+    }
+    
+    .achievement-notification.show {
+        transform: translateY(0);
+    }
+    
+    .voice-controls {
+        bottom: 80px;
+        right: 15px;
+    }
+    
+    .camera-controls {
+        bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .progress-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .biometric-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .exercise-benefits {
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+    }
+    
+    .benefits-list {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .progress-dashboard,
+    .feedback-panel,
+    .instructions-content {
+        background: rgba(30, 30, 30, 0.95);
+        color: #fff;
+    }
+    
+    .progress-card {
+        background: rgba(50, 50, 50, 0.8);
+        color: #fff;
+    }
+    
+    .session-timer {
+        background: rgba(40, 40, 40, 0.9);
+        color: #fff;
+    }
+}
+
+/* Accessibility Enhancements */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.focus-outline:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .body-part-card,
+    .exercise-card,
+    .verify-button {
+        border: 2px solid #000;
+    }
+    
+    .progress-value,
+    .timer-display {
+        color: #000;
+        font-weight: 900;
+    }
+}
+
+/* Body Part Demonstration */
+.body-part-demo {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.demo-animation-container {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.demo-label h4 {
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.demo-label p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Exercise Animation Section */
+.exercise-animation-section {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+.animation-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.animation-tab {
+    background: rgba(102, 126, 234, 0.1);
+    border: none;
+    color: #667eea;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.animation-tab:hover {
+    background: rgba(102, 126, 234, 0.2);
+    transform: translateY(-2px);
+}
+
+.animation-tab.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.animation-content {
+    display: none;
+}
+
+.animation-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* Exercise Comparison Styles */
+.exercise-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.comparison-side {
+    text-align: center;
+}
+
+.comparison-side h5 {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.comparison-side.correct h5 {
+    color: #4ECDC4;
+}
+
+.comparison-side.incorrect h5 {
+    color: #FF6B6B;
+}
+
+/* Slow Motion Demo */
+.slow-motion-demo {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.phase-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.phase-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.phase-dot.active {
+    background: #667eea;
+    transform: scale(1.3);
+}
+
+/* Animation Integration in Exercise Cards */
+.exercise-card .video-player {
+    position: relative;
+    overflow: hidden;
+}
+
+.exercise-card .exercise-preview {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 0;
+}
+
+.exercise-card .exercise-preview .exercise-figure {
+    transform: translate(-50%, -50%) scale(0.7);
+}
+
+/* Responsive Design for Animations */
+@media (max-width: 768px) {
+    .body-part-demo {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .demo-animation-container {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .exercise-comparison {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .animation-tabs {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .demo-animation-container {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .animation-tabs {
+        flex-direction: column;
+    }
+    
+    .animation-tab {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+} 

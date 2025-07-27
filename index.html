@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhysioVeda - AI-Powered Physiotherapy Platform</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="enhanced-styles.css" rel="stylesheet">
+    <link href="exercise-animations.css" rel="stylesheet">
+    <link href="realistic-human-animations.css" rel="stylesheet">
+    <link href="interactive-human-model.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .main-content {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            color: white;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .step-number {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .body-part-selection {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .body-part-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .body-part-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .body-part-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .body-part-card.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scale(1.05);
+        }
+
+        .body-part-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .exercise-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .exercise-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .exercise-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .play-overlay:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .exercise-info h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .exercise-info p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .difficulty-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .difficulty-easy {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .difficulty-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .difficulty-hard {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .verify-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .verify-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 1rem;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .verify-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .verify-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .motion-tracking {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .camera-view {
+            width: 100%;
+            height: 400px;
+            background: #000;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .skeleton-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00ff00;
+            font-size: 1.2rem;
+        }
+
+        .accuracy-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .accuracy-metric {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .accuracy-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .accuracy-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .progress-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: conic-gradient(#667eea 0deg, #667eea 0deg, #e9ecef 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+
+        .progress-circle::before {
+            content: '';
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .progress-text {
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            color: #333;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tips-panel {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .tips-panel h4 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tips-list {
+            list-style: none;
+        }
+
+        .tips-list li {
+            padding: 0.5rem 0;
+            color: #555;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .tips-list li::before {
+            content: '✓';
+            color: #667eea;
+            font-weight: bold;
+            margin-top: 0.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .body-part-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .exercise-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .step-indicator {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <!-- Voice Controls -->
+    <div class="voice-controls">
+        <button id="voiceToggle" class="voice-toggle focus-outline" title="Toggle Voice Guidance">
+            <i class="fas fa-microphone"></i>
+        </button>
+    </div>
+
+    <script src="advanced-features.js"></script>
+    <script src="animation-controller.js"></script>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Comprehensive exercise database
+        const exerciseData = {
+            neck: [
+                {
+                    id: 1,
+                    name: "Cervical Rotation",
+                    description: "Gentle 360-degree neck rotations to improve mobility and reduce tension.",
+                    difficulty: "easy",
+                    duration: "45 seconds",
+                    sets: "3 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Improves range of motion", "Reduces neck stiffness", "Relieves tension headaches"],
+                    instructions: ["Sit or stand straight", "Slowly rotate head clockwise", "Complete full circles", "Reverse direction"]
+                },
+                {
+                    id: 2,
+                    name: "Upper Trap Stretches",
+                    description: "Targeted stretches for upper trapezius muscles to relieve neck and shoulder tension.",
+                    difficulty: "easy",
+                    duration: "30 seconds",
+                    sets: "4 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Reduces shoulder tension", "Improves posture", "Prevents headaches"],
+                    instructions: ["Tilt head to one side", "Hold gentle stretch", "Feel stretch in opposite side", "Switch sides"]
+                },
+                {
+                    id: 3,
+                    name: "Neck Strengthening",
+                    description: "Isometric exercises to strengthen deep neck flexors and improve stability.",
+                    difficulty: "medium",
+                    duration: "20 seconds",
+                    sets: "5 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Strengthens neck muscles", "Improves stability", "Prevents injury"],
+                    instructions: ["Place hand on forehead", "Apply gentle pressure", "Resist with neck muscles", "Hold position"]
+                }
+            ],
+            shoulders: [
+                {
+                    id: 4,
+                    name: "Pendulum Swings",
+                    description: "Gravity-assisted shoulder mobilization for post-injury rehabilitation.",
+                    difficulty: "easy",
+                    duration: "60 seconds",
+                    sets: "3 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Restores shoulder mobility", "Reduces stiffness", "Promotes healing"],
+                    instructions: ["Lean forward slightly", "Let arm hang freely", "Create small circles", "Gradually increase size"]
+                },
+                {
+                    id: 5,
+                    name: "Wall Angels",
+                    description: "Shoulder blade mobility and posture improvement exercise against the wall.",
+                    difficulty: "medium",
+                    duration: "45 seconds",
+                    sets: "3 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Improves posture", "Strengthens rear delts", "Increases mobility"],
+                    instructions: ["Stand against wall", "Raise arms to goal post", "Slide up and down", "Keep contact with wall"]
+                },
+                {
+                    id: 6,
+                    name: "Rotator Cuff Strengthening",
+                    description: "External rotation exercises to strengthen the rotator cuff muscles.",
+                    difficulty: "medium",
+                    duration: "30 seconds",
+                    sets: "4 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Prevents shoulder injury", "Improves stability", "Enhances performance"],
+                    instructions: ["Elbow at 90 degrees", "Rotate arm outward", "Control the movement", "Feel muscles working"]
+                }
+            ],
+            back: [
+                {
+                    id: 7,
+                    name: "Cat-Cow Mobilization",
+                    description: "Dynamic spinal flexion and extension to improve vertebral mobility.",
+                    difficulty: "easy",
+                    duration: "90 seconds",
+                    sets: "2 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Improves spinal flexibility", "Relieves back tension", "Strengthens core"],
+                    instructions: ["Start on hands and knees", "Arch back (cow)", "Round back (cat)", "Flow smoothly"]
+                },
+                {
+                    id: 8,
+                    name: "Thoracic Extension",
+                    description: "Upper back extension exercises to counteract forward head posture.",
+                    difficulty: "medium",
+                    duration: "45 seconds",
+                    sets: "3 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Improves posture", "Reduces upper back pain", "Increases mobility"],
+                    instructions: ["Hands behind head", "Extend upper back", "Look up slightly", "Feel the stretch"]
+                },
+                {
+                    id: 9,
+                    name: "Lower Back Strengthening",
+                    description: "Progressive loading exercises for lumbar spine stabilization.",
+                    difficulty: "hard",
+                    duration: "30 seconds",
+                    sets: "4 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Strengthens lower back", "Improves stability", "Prevents injury"],
+                    instructions: ["Lie face down", "Lift chest and legs", "Hold position", "Control descent"]
+                }
+            ],
+            hips: [
+                {
+                    id: 10,
+                    name: "Hip Flexor Stretches",
+                    description: "Dynamic stretches to improve hip flexor flexibility and reduce tightness.",
+                    difficulty: "easy",
+                    duration: "60 seconds",
+                    sets: "3 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Improves hip mobility", "Reduces lower back tension", "Better posture"],
+                    instructions: ["Step into lunge position", "Push hips forward", "Feel stretch in front", "Switch legs"]
+                },
+                {
+                    id: 11,
+                    name: "Clamshells",
+                    description: "Hip abductor strengthening exercise for glute medius activation.",
+                    difficulty: "medium",
+                    duration: "45 seconds",
+                    sets: "3 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Strengthens glutes", "Improves hip stability", "Reduces knee pain"],
+                    instructions: ["Lie on side", "Knees bent at 90°", "Lift top knee", "Keep feet together"]
+                }
+            ],
+            knees: [
+                {
+                    id: 12,
+                    name: "Straight Leg Raises",
+                    description: "Quadriceps strengthening without putting stress on the knee joint.",
+                    difficulty: "easy",
+                    duration: "30 seconds",
+                    sets: "4 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Strengthens quadriceps", "Protects knee joint", "Improves stability"],
+                    instructions: ["Lie on back", "Lift straight leg", "Hold at 45 degrees", "Lower slowly"]
+                },
+                {
+                    id: 13,
+                    name: "Hamstring Curls",
+                    description: "Posterior chain strengthening for balanced knee muscle development.",
+                    difficulty: "medium",
+                    duration: "45 seconds",
+                    sets: "3 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Strengthens hamstrings", "Balances leg muscles", "Prevents injury"],
+                    instructions: ["Lie face down", "Bend knee to 90°", "Lift heel to glute", "Lower with control"]
+                }
+            ],
+            ankles: [
+                {
+                    id: 14,
+                    name: "Alphabet Draws",
+                    description: "Ankle mobility exercise drawing letters with your toe to improve range of motion.",
+                    difficulty: "easy",
+                    duration: "120 seconds",
+                    sets: "2 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Improves ankle mobility", "Strengthens small muscles", "Enhances proprioception"],
+                    instructions: ["Sit comfortably", "Draw alphabet with toe", "Use full range of motion", "Switch feet"]
+                },
+                {
+                    id: 15,
+                    name: "Calf Raises Progressive",
+                    description: "Progressive calf strengthening from double to single leg variations.",
+                    difficulty: "medium",
+                    duration: "60 seconds",
+                    sets: "3 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Strengthens calves", "Improves balance", "Supports ankle stability"],
+                    instructions: ["Rise onto toes", "Hold peak position", "Lower with control", "Progress to single leg"]
+                }
+            ],
+            wrists: [
+                {
+                    id: 16,
+                    name: "Wrist Flexor Stretches",
+                    description: "Gentle stretches for wrist flexors to prevent carpal tunnel syndrome.",
+                    difficulty: "easy",
+                    duration: "45 seconds",
+                    sets: "3 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Prevents carpal tunnel", "Reduces wrist pain", "Improves flexibility"],
+                    instructions: ["Extend arm forward", "Pull fingers back", "Feel stretch in forearm", "Hold gently"]
+                },
+                {
+                    id: 17,
+                    name: "Grip Strengthening",
+                    description: "Progressive grip strength exercises using various hand positions.",
+                    difficulty: "medium",
+                    duration: "30 seconds",
+                    sets: "4 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Strengthens grip", "Improves hand function", "Prevents injury"],
+                    instructions: ["Squeeze stress ball", "Hold maximum grip", "Release slowly", "Vary hand positions"]
+                }
+            ],
+            core: [
+                {
+                    id: 18,
+                    name: "Dead Bug Exercise",
+                    description: "Core stabilization exercise maintaining neutral spine while moving limbs.",
+                    difficulty: "medium",
+                    duration: "60 seconds",
+                    sets: "3 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Strengthens deep core", "Improves stability", "Protects lower back"],
+                    instructions: ["Lie on back", "Arms and knees at 90°", "Lower opposite arm/leg", "Maintain spine position"]
+                },
+                {
+                    id: 19,
+                    name: "Bird Dog",
+                    description: "Quadruped core stabilization exercise for spinal stability and coordination.",
+                    difficulty: "medium",
+                    duration: "45 seconds",
+                    sets: "3 sets",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    benefits: ["Improves balance", "Strengthens core", "Enhances coordination"],
+                    instructions: ["Start on hands and knees", "Extend opposite arm/leg", "Hold steady position", "Switch sides"]
+                }
+            ]
+        };
+
+        const bodyParts = [
+            { id: 'neck', name: 'Neck & Cervical', icon: 'fas fa-head-side-cough', color: '#FF6B6B' },
+            { id: 'shoulders', name: 'Shoulders & Arms', icon: 'fas fa-user', color: '#4ECDC4' },
+            { id: 'back', name: 'Spine & Back', icon: 'fas fa-user-injured', color: '#45B7D1' },
+            { id: 'hips', name: 'Hips & Pelvis', icon: 'fas fa-walking', color: '#96CEB4' },
+            { id: 'knees', name: 'Knees & Legs', icon: 'fas fa-running', color: '#FECA57' },
+            { id: 'ankles', name: 'Ankles & Feet', icon: 'fas fa-shoe-prints', color: '#FF9FF3' },
+            { id: 'wrists', name: 'Wrists & Hands', icon: 'fas fa-hand', color: '#54A0FF' },
+            { id: 'core', name: 'Core & Abdomen', icon: 'fas fa-dumbbell', color: '#5F27CD' }
+        ];
+
+        function StepIndicator({ currentStep }) {
+            const steps = [
+                { number: 1, label: 'Select Body Part' },
+                { number: 2, label: 'Choose Exercise' },
+                { number: 3, label: 'Motion Tracking' }
+            ];
+
+            return (
+                <div className="step-indicator">
+                    {steps.map((step) => (
+                        <div key={step.number} className={`step ${currentStep >= step.number ? 'active' : ''}`}>
+                            <div className="step-number">{step.number}</div>
+                            <span>{step.label}</span>
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+
+        function BodyPartSelection({ selectedBodyPart, onSelectBodyPart }) {
+            const [animationController] = useState(() => new window.ExerciseAnimationController());
+            
+            return (
+                <div className="body-part-selection fade-in">
+                    <h2 className="section-title">
+                        <i className="fas fa-user-md"></i>
+                        Select Body Part for Therapy
+                    </h2>
+                    <p style={{ color: '#666', marginBottom: '1.5rem' }}>
+                        Choose the area of your body that needs physiotherapy attention. Each area has specialized exercises designed by experts.
+                    </p>
+                    <div className="body-part-grid">
+                        {bodyParts.map((part) => (
+                            <button
+                                key={part.id}
+                                className={`body-part-card body-part-card-enhanced ${selectedBodyPart === part.id ? 'selected' : ''} focus-outline`}
+                                onClick={() => onSelectBodyPart(part.id)}
+                                style={{ 
+                                    background: selectedBodyPart === part.id 
+                                        ? `linear-gradient(135deg, ${part.color}CC, ${part.color}99)`
+                                        : `linear-gradient(135deg, ${part.color}, ${part.color}CC)`
+                                }}
+                            >
+                                <div className="body-part-stats">
+                                    {exerciseData[part.id] ? exerciseData[part.id].length : 0} exercises
+                                </div>
+                                <div className="body-part-icon">
+                                    <i className={part.icon}></i>
+                                </div>
+                                <h3>{part.name}</h3>
+                            </button>
+                        ))}
+                    </div>
+                    
+                    {/* Body Part Demo Animation */}
+                    {selectedBodyPart && (
+                        <div 
+                            className="fade-in"
+                            dangerouslySetInnerHTML={{ 
+                                __html: animationController.createBodyPartDemo(selectedBodyPart) 
+                            }}
+                        />
+                    )}
+                </div>
+            );
+        }
+
+        function ExerciseSelection({ bodyPart, selectedExercise, onSelectExercise, onShowInstructions }) {
+            const exercises = exerciseData[bodyPart] || [];
+            const [animationController] = useState(() => new window.ExerciseAnimationController());
+            const [activeAnimationTab, setActiveAnimationTab] = useState('preview');
+
+            if (!bodyPart) return null;
+
+            return (
+                <div className="exercise-section fade-in">
+                    <h2 className="section-title">
+                        <i className="fas fa-dumbbell"></i>
+                        Available Exercises for {bodyParts.find(bp => bp.id === bodyPart)?.name}
+                    </h2>
+                    <div className="exercise-grid">
+                        {exercises.map((exercise) => (
+                            <div
+                                key={exercise.id}
+                                className={`exercise-card exercise-card-enhanced ${selectedExercise?.id === exercise.id ? 'selected' : ''}`}
+                                onClick={() => onSelectExercise(exercise)}
+                            >
+                                <div className="video-player">
+                                    <div 
+                                        dangerouslySetInnerHTML={{ 
+                                            __html: animationController.createPreviewAnimation(exercise) 
+                                        }}
+                                    />
+                                </div>
+                                <div className="exercise-info">
+                                    <h3>{exercise.name}</h3>
+                                    <p>{exercise.description}</p>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+                                        <div className={`difficulty-badge difficulty-${exercise.difficulty}`}>
+                                            {exercise.difficulty.charAt(0).toUpperCase() + exercise.difficulty.slice(1)}
+                                        </div>
+                                        <div style={{ fontSize: '0.8rem', color: '#666' }}>
+                                            {exercise.duration} • {exercise.sets}
+                                        </div>
+                                    </div>
+                                    
+                                    {exercise.benefits && (
+                                        <div className="exercise-benefits">
+                                            <h5>Benefits:</h5>
+                                            <div className="benefits-list">
+                                                {exercise.benefits.map((benefit, index) => (
+                                                    <span key={index} className="benefit-tag">{benefit}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    
+                    {selectedExercise && (
+                        <>
+                            {/* Exercise Animation Section */}
+                            <div className="exercise-animation-section fade-in">
+                                <h3 className="section-title">
+                                    <i className="fas fa-play-circle"></i>
+                                    Exercise Demonstration - {selectedExercise.name}
+                                </h3>
+                                
+                                <div className="animation-tabs">
+                                    <button 
+                                        className={`animation-tab ${activeAnimationTab === 'preview' ? 'active' : ''}`}
+                                        onClick={() => setActiveAnimationTab('preview')}
+                                    >
+                                        <i className="fas fa-eye"></i> Full Demo
+                                    </button>
+                                    <button 
+                                        className={`animation-tab ${activeAnimationTab === 'slow' ? 'active' : ''}`}
+                                        onClick={() => setActiveAnimationTab('slow')}
+                                    >
+                                        <i className="fas fa-hourglass-half"></i> Slow Motion
+                                    </button>
+                                    <button 
+                                        className={`animation-tab ${activeAnimationTab === 'breakdown' ? 'active' : ''}`}
+                                        onClick={() => setActiveAnimationTab('breakdown')}
+                                    >
+                                        <i className="fas fa-list-ol"></i> Step Breakdown
+                                    </button>
+                                </div>
+                                
+                                <div className={`animation-content ${activeAnimationTab === 'preview' ? 'active' : ''}`}>
+                                    <window.ExerciseAnimationComponent exercise={selectedExercise} />
+                                </div>
+                                
+                                <div className={`animation-content ${activeAnimationTab === 'slow' ? 'active' : ''}`}>
+                                    <div 
+                                        dangerouslySetInnerHTML={{ 
+                                            __html: animationController.createSlowMotionDemo(selectedExercise) 
+                                        }}
+                                    />
+                                </div>
+                                
+                                <div className={`animation-content ${activeAnimationTab === 'breakdown' ? 'active' : ''}`}>
+                                    <div className="step-breakdown">
+                                        <h4>Exercise Steps:</h4>
+                                        {selectedExercise.instructions && (
+                                            <ol style={{ textAlign: 'left', maxWidth: '600px', margin: '0 auto' }}>
+                                                {selectedExercise.instructions.map((instruction, index) => (
+                                                    <li key={index} style={{ padding: '0.5rem 0', color: '#555' }}>
+                                                        {instruction}
+                                                    </li>
+                                                ))}
+                                            </ol>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div className="tips-panel fade-in">
+                                <h4>
+                                    <i className="fas fa-lightbulb"></i>
+                                    Exercise Tips & Guidance
+                                </h4>
+                                <ul className="tips-list">
+                                    <li>Watch the animation carefully before starting</li>
+                                    <li>Use the slow motion demo to understand each phase</li>
+                                    <li>Match your breathing to the demonstration rhythm</li>
+                                    <li>Focus on proper form rather than speed</li>
+                                    <li>Stop if you experience any sharp pain</li>
+                                </ul>
+                                
+                                <div style={{ textAlign: 'center', marginTop: '1rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                                    <button 
+                                        className="verify-button"
+                                        onClick={onShowInstructions}
+                                        style={{ background: 'linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%)' }}
+                                    >
+                                        <i className="fas fa-list"></i> Detailed Instructions
+                                    </button>
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </div>
+            );
+        }
+
+        function MotionTracking({ isTracking, onStartTracking, onStopTracking, exercise, sessionTime, biometricData, realTimeFeedback, formatTime }) {
+            const [accuracy, setAccuracy] = useState(0);
+            const [reps, setReps] = useState(0);
+            const [form, setForm] = useState(0);
+            const intervalRef = useRef();
+
+            useEffect(() => {
+                if (isTracking) {
+                    intervalRef.current = setInterval(() => {
+                        // Simulate real-time tracking data
+                        setAccuracy(prev => Math.min(100, prev + Math.random() * 10));
+                        setForm(prev => 85 + Math.random() * 15);
+                        if (Math.random() > 0.7) {
+                            setReps(prev => prev + 1);
+                        }
+                    }, 1000);
+                } else {
+                    clearInterval(intervalRef.current);
+                    setAccuracy(0);
+                    setReps(0);
+                    setForm(0);
+                }
+
+                return () => clearInterval(intervalRef.current);
+            }, [isTracking]);
+
+            if (!exercise) return null;
+
+            return (
+                <div className="motion-tracking fade-in">
+                    <h2 className="section-title">
+                        <i className="fas fa-video"></i>
+                        AI Motion Analysis - {exercise.name}
+                    </h2>
+                    
+                    {/* Session Timer */}
+                    {isTracking && (
+                        <div className="session-timer fade-in">
+                            <div className="timer-display">{formatTime(sessionTime)}</div>
+                            <div className="timer-label">Session Duration</div>
+                        </div>
+                    )}
+                    
+                    {/* Enhanced Camera View */}
+                    <div className="camera-container">
+                        <video 
+                            id="cameraVideo" 
+                            className="camera-video" 
+                            autoPlay 
+                            muted 
+                            playsInline
+                        />
+                        <div className="pose-overlay">
+                            <canvas id="poseCanvas" className="pose-canvas" />
+                        </div>
+                        
+                        <div className="camera-controls">
+                            <button className="camera-btn focus-outline" title="Switch Camera">
+                                <i className="fas fa-sync-alt"></i>
+                            </button>
+                            <button className="camera-btn focus-outline" title="Fullscreen">
+                                <i className="fas fa-expand"></i>
+                            </button>
+                            <button className="camera-btn focus-outline" title="Settings">
+                                <i className="fas fa-cog"></i>
+                            </button>
+                        </div>
+                        
+                        {!isTracking && (
+                            <div className="skeleton-overlay">
+                                <div style={{ textAlign: 'center', color: '#888' }}>
+                                    <i className="fas fa-camera" style={{ fontSize: '3rem' }}></i>
+                                    <div style={{ marginTop: '1rem' }}>
+                                        Camera Ready - Click Start to Begin AI Analysis
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Control Buttons */}
+                    <div className="verify-section">
+                        {!isTracking ? (
+                            <button className="verify-button focus-outline" onClick={onStartTracking}>
+                                <i className="fas fa-play"></i> Start AI Motion Analysis
+                            </button>
+                        ) : (
+                            <button 
+                                className="verify-button focus-outline" 
+                                onClick={onStopTracking} 
+                                style={{ background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' }}
+                            >
+                                <i className="fas fa-stop"></i> Complete Session
+                            </button>
+                        )}
+                    </div>
+
+                    {/* Real-time Metrics */}
+                    {isTracking && (
+                        <div className="accuracy-display fade-in">
+                            <div className="accuracy-metric">
+                                <div className="progress-ring">
+                                    <svg>
+                                        <circle
+                                            cx="60"
+                                            cy="60"
+                                            r="54"
+                                            stroke="#e9ecef"
+                                            strokeWidth="12"
+                                            fill="none"
+                                        />
+                                        <circle
+                                            cx="60"
+                                            cy="60"
+                                            r="54"
+                                            stroke="#667eea"
+                                            strokeWidth="12"
+                                            fill="none"
+                                            className="progress-ring-circle"
+                                            style={{ strokeDashoffset: 339 - (accuracy * 3.39) }}
+                                        />
+                                    </svg>
+                                    <div className="progress-ring-text">{Math.round(accuracy)}%</div>
+                                </div>
+                                <div className="accuracy-label">Accuracy</div>
+                            </div>
+                            <div className="accuracy-metric">
+                                <div className="accuracy-value">{reps}</div>
+                                <div className="accuracy-label">Repetitions</div>
+                            </div>
+                            <div className="accuracy-metric">
+                                <div className="accuracy-value">{Math.round(form)}%</div>
+                                <div className="accuracy-label">Form Quality</div>
+                            </div>
+                            <div className="accuracy-metric">
+                                <div className="accuracy-value">{formatTime(sessionTime)}</div>
+                                <div className="accuracy-label">Time</div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Biometric Monitor */}
+                    {isTracking && biometricData.isActive && (
+                        <div className="biometric-panel fade-in">
+                            <h4 className="feedback-header">
+                                <i className="fas fa-heartbeat"></i>
+                                Biometric Monitoring
+                            </h4>
+                            <div className="biometric-grid">
+                                <div className="biometric-metric">
+                                    <div className={`biometric-value ${biometricData.heartRate > 120 ? 'heart-rate high' : ''}`}>
+                                        {biometricData.heartRate}
+                                    </div>
+                                    <div className="biometric-label">Heart Rate (BPM)</div>
+                                </div>
+                                <div className="biometric-metric">
+                                    <div className="biometric-value">{biometricData.calories}</div>
+                                    <div className="biometric-label">Calories</div>
+                                </div>
+                                <div className="biometric-metric">
+                                    <div className="biometric-value">{Math.round(accuracy)}</div>
+                                    <div className="biometric-label">Efficiency %</div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Real-time Feedback */}
+                    {isTracking && realTimeFeedback.length > 0 && (
+                        <div className="feedback-panel fade-in">
+                            <h4 className="feedback-header">
+                                <i className="fas fa-robot"></i>
+                                AI Form Analysis
+                            </h4>
+                            <ul className="feedback-list">
+                                {realTimeFeedback.map((feedback, index) => {
+                                    const feedbackType = feedback.includes('Great') || feedback.includes('Excellent') || feedback.includes('Perfect') 
+                                        ? 'positive' 
+                                        : feedback.includes('Focus') || feedback.includes('Try') 
+                                        ? 'warning' 
+                                        : 'error';
+                                    
+                                    return (
+                                        <li key={index} className={feedbackType}>
+                                            {feedback}
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        function PhysioVedaApp() {
+            const [selectedBodyPart, setSelectedBodyPart] = useState('');
+            const [selectedExercise, setSelectedExercise] = useState(null);
+            const [isTracking, setIsTracking] = useState(false);
+            const [currentStep, setCurrentStep] = useState(1);
+            const [showProgress, setShowProgress] = useState(false);
+            const [showInstructions, setShowInstructions] = useState(false);
+            
+            // Initialize advanced features
+            const progressTracker = useRef(new window.PhysioVedaAdvanced.ProgressTracker());
+            const cameraManager = useRef(new window.PhysioVedaAdvanced.CameraManager());
+            const voiceGuide = useRef(new window.PhysioVedaAdvanced.VoiceGuide());
+            const biometricMonitor = useRef(new window.PhysioVedaAdvanced.BiometricMonitor());
+            const formAnalyzer = useRef(new window.PhysioVedaAdvanced.FormAnalyzer());
+            const animationController = useRef(new window.ExerciseAnimationController());
+            
+            const [progressData, setProgressData] = useState({
+                totalSessions: 0,
+                streak: 0,
+                avgAccuracy: 0,
+                achievements: []
+            });
+            const [biometricData, setBiometricData] = useState({
+                heartRate: 0,
+                calories: 0,
+                isActive: false
+            });
+            const [sessionTime, setSessionTime] = useState(0);
+            const [realTimeFeedback, setRealTimeFeedback] = useState([]);
+            
+            useEffect(() => {
+                // Load progress data
+                const sessions = progressTracker.current.sessions;
+                const achievements = progressTracker.current.achievements;
+                const streaks = progressTracker.current.streaks;
+                
+                setProgressData({
+                    totalSessions: sessions.length,
+                    streak: streaks.current,
+                    avgAccuracy: progressTracker.current.getAverageAccuracy(),
+                    achievements: achievements
+                });
+                
+                // Initialize voice toggle
+                const voiceToggle = document.getElementById('voiceToggle');
+                if (voiceToggle) {
+                    voiceToggle.onclick = () => {
+                        voiceGuide.current.toggle();
+                        voiceToggle.classList.toggle('active');
+                    };
+                }
+            }, []);
+            
+            useEffect(() => {
+                let interval;
+                if (isTracking) {
+                    interval = setInterval(() => {
+                        setSessionTime(prev => prev + 1);
+                        
+                        // Update biometric data
+                        const bioData = biometricMonitor.current.getCurrentData();
+                        setBiometricData(bioData);
+                        
+                        // Simulate form analysis feedback
+                        if (selectedBodyPart && selectedExercise) {
+                            const analysis = formAnalyzer.current.analyzeForm(
+                                selectedBodyPart, 
+                                selectedExercise, 
+                                cameraManager.current.poseData
+                            );
+                            setRealTimeFeedback(analysis.feedback);
+                            
+                            // Provide voice feedback occasionally
+                            if (sessionTime % 30 === 0 && sessionTime > 0) {
+                                const accuracy = cameraManager.current.getPoseAccuracy(selectedExercise.name);
+                                voiceGuide.current.provideExerciseFeedback(accuracy, 85, Math.floor(sessionTime / 10));
+                            }
+                        }
+                    }, 1000);
+                }
+                
+                return () => clearInterval(interval);
+            }, [isTracking, sessionTime, selectedBodyPart, selectedExercise]);
+
+            const handleBodyPartSelect = (bodyPart) => {
+                setSelectedBodyPart(bodyPart);
+                setSelectedExercise(null);
+                setCurrentStep(2);
+                setIsTracking(false);
+                voiceGuide.current.speak(`Selected ${bodyParts.find(bp => bp.id === bodyPart)?.name} for therapy`);
+            };
+
+            const handleInteractiveBodyPartClick = (bodyPartId) => {
+                // Handle clicks from the interactive 3D model
+                setSelectedBodyPart(bodyPartId);
+                setSelectedExercise(null);
+                setCurrentStep(2);
+                setIsTracking(false);
+                voiceGuide.current.speak(`Selected ${bodyParts.find(bp => bp.id === bodyPartId)?.name} for therapy`);
+                
+                // Smooth scroll to body part selection
+                setTimeout(() => {
+                    const bodyPartSection = document.querySelector('.body-part-selection');
+                    if (bodyPartSection) {
+                        bodyPartSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 100);
+            };
+
+            const handleExerciseSelect = (exercise) => {
+                setSelectedExercise(exercise);
+                setCurrentStep(3);
+                setIsTracking(false);
+                voiceGuide.current.speak(`Ready to start ${exercise.name}`);
+            };
+
+            const handleStartTracking = async () => {
+                setIsTracking(true);
+                setSessionTime(0);
+                setRealTimeFeedback([]);
+                
+                // Initialize camera and biometric monitoring
+                const videoElement = document.getElementById('cameraVideo');
+                const canvasElement = document.getElementById('poseCanvas');
+                
+                if (videoElement && canvasElement) {
+                    await cameraManager.current.initialize(videoElement, canvasElement);
+                }
+                
+                biometricMonitor.current.startMonitoring();
+                voiceGuide.current.announcePhase('exercise');
+            };
+
+            const handleStopTracking = () => {
+                setIsTracking(false);
+                
+                // Stop monitoring and save session
+                const bioResults = biometricMonitor.current.stopMonitoring();
+                cameraManager.current.stop();
+                
+                if (selectedExercise && selectedBodyPart) {
+                    const accuracy = 85 + Math.random() * 10; // Simulated final accuracy
+                    const session = progressTracker.current.addSession(
+                        selectedBodyPart,
+                        selectedExercise,
+                        accuracy,
+                        sessionTime,
+                        Math.floor(sessionTime / 10)
+                    );
+                    
+                    // Update progress data
+                    const sessions = progressTracker.current.sessions;
+                    const achievements = progressTracker.current.achievements;
+                    const streaks = progressTracker.current.streaks;
+                    
+                    setProgressData({
+                        totalSessions: sessions.length,
+                        streak: streaks.current,
+                        avgAccuracy: progressTracker.current.getAverageAccuracy(),
+                        achievements: achievements
+                    });
+                    
+                    voiceGuide.current.announcePhase('complete');
+                }
+            };
+
+            const formatTime = (seconds) => {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            };
+
+            return (
+                <div className="app-container">
+                    <header className="header">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div>
+                                <h1>
+                                    <i className="fas fa-lotus"></i>
+                                    PhysioVeda
+                                </h1>
+                                <div className="subtitle">AI-Powered Physiotherapy & Wellness Platform</div>
+                            </div>
+                            <div style={{ display: 'flex', gap: '1rem' }}>
+                                <button 
+                                    className="header-btn focus-outline"
+                                    onClick={() => setShowProgress(!showProgress)}
+                                    style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', padding: '0.5rem 1rem', borderRadius: '20px', cursor: 'pointer' }}
+                                >
+                                    <i className="fas fa-chart-line"></i> Progress
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="main-content">
+                        <StepIndicator currentStep={currentStep} />
+                        
+                        {showProgress && (
+                            <div className="progress-dashboard fade-in">
+                                <h2 className="section-title">
+                                    <i className="fas fa-trophy"></i>
+                                    Your Progress Dashboard
+                                </h2>
+                                <div className="progress-grid">
+                                    <div className="progress-card">
+                                        <div className="progress-value">{progressData.totalSessions}</div>
+                                        <div className="progress-label">Total Sessions</div>
+                                    </div>
+                                    <div className="progress-card">
+                                        <div className="progress-value">{progressData.streak}</div>
+                                        <div className="progress-label">Day Streak</div>
+                                        <div className="streak-indicator">
+                                            {Array.from({length: Math.min(progressData.streak, 7)}).map((_, i) => (
+                                                <i key={i} className="fas fa-fire streak-flame"></i>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="progress-card">
+                                        <div className="progress-value">{progressData.avgAccuracy}%</div>
+                                        <div className="progress-label">Avg Accuracy</div>
+                                    </div>
+                                    <div className="progress-card">
+                                        <div className="progress-value">{progressData.achievements.length}</div>
+                                        <div className="progress-label">Achievements</div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        
+                        {/* Interactive 3D Human Model */}
+                        {!selectedBodyPart && (
+                            <div 
+                                className="fade-in"
+                                dangerouslySetInnerHTML={{ 
+                                    __html: animationController.current.createInteractiveHumanModel() 
+                                }}
+                                ref={(element) => {
+                                    if (element) {
+                                        animationController.current.setupInteractiveHumanModel(
+                                            element, 
+                                            handleInteractiveBodyPartClick
+                                        );
+                                    }
+                                }}
+                            />
+                        )}
+                        
+                        <BodyPartSelection
+                            selectedBodyPart={selectedBodyPart}
+                            onSelectBodyPart={handleBodyPartSelect}
+                        />
+
+                        {selectedBodyPart && (
+                            <ExerciseSelection
+                                bodyPart={selectedBodyPart}
+                                selectedExercise={selectedExercise}
+                                onSelectExercise={handleExerciseSelect}
+                                onShowInstructions={() => setShowInstructions(true)}
+                            />
+                        )}
+
+                        {selectedExercise && (
+                            <MotionTracking
+                                isTracking={isTracking}
+                                onStartTracking={handleStartTracking}
+                                onStopTracking={handleStopTracking}
+                                exercise={selectedExercise}
+                                sessionTime={sessionTime}
+                                biometricData={biometricData}
+                                realTimeFeedback={realTimeFeedback}
+                                formatTime={formatTime}
+                            />
+                        )}
+                    </main>
+                    
+                    {/* Exercise Instructions Modal */}
+                    <div className={`instructions-overlay ${showInstructions ? 'show' : ''}`}>
+                        <div className="instructions-content">
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                                <h3>Exercise Instructions</h3>
+                                <button 
+                                    onClick={() => setShowInstructions(false)}
+                                    style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}
+                                >
+                                    ×
+                                </button>
+                            </div>
+                            {selectedExercise && selectedExercise.instructions && (
+                                <ul className="instructions-list">
+                                    {selectedExercise.instructions.map((instruction, index) => (
+                                        <li key={index}>
+                                            <div className="instruction-step">{index + 1}</div>
+                                            <span>{instruction}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<PhysioVedaApp />, document.getElementById('root'));
+    </script>
+</body>
+</html> 
